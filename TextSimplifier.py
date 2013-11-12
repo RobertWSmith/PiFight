@@ -2,6 +2,15 @@ from nltk.corpus import wordnet
 
 """
 See NLTK Book page 42
+
+example use case:
+
+from TextSimplifier import AntonymReplacer
+replacer = AntonymReplacer()
+replacer.replace('good')
+replacer.replace('uglify')
+sent = ["let's", "not", "uglify", "our", "code"]
+replacer.replaceNegations(sent)
 """
 
 class AntonymReplacer(object):
@@ -32,12 +41,33 @@ class AntonymReplacer(object):
         return words
 
 """
-example use case:
+See NLTK book Ch. 2
 
-from TextSimplifier import AntonymReplacer
-replacer = AntonymReplacer()
-replacer.replace('good')
-replacer.replace('uglify')
-sent = ["let's", "not", "uglify", "our", "code"]
-replacer.replace_negations(sent)
+Repeat Replacer use cases
+
+from TextSimplifier import RepeatReplacer
+replacer = RepeatReplacer()
+replacer.replace('looooooooove')
+replacer.replace('ooooooooooh')
+replacer.replace('goose')
+
 """
+import re
+
+class RepeatReplacer(object):
+    def __init__(self):
+        self.repeat_regexp = re.compile(r'(\w*)(\w)\2(\w*)')
+        self.repl = r'\1\2\3'
+
+    def replace(self, word):
+        repl_word = self.repeat_regexp.sub(self.repl, word)
+        if repl_word != word:
+            return self.replace(repl_word)
+        else:
+            return repl_word
+
+from nltk.stem import PorterStemmer
+
+class SynonymReplacer(object):
+    
+
